@@ -10,6 +10,8 @@ type SnippetModelInterface interface {
 	Insert(title string, content string, expires int) (int, error)
 	Get(id int) (Snippet, error)
 	Latest() ([]Snippet, error)
+	Update(id int, title string, content string) error
+	Delete(id int) error
 }
 
 type Snippet struct {
@@ -89,4 +91,16 @@ func (m *SnippetModel) Latest() ([]Snippet, error) {
 	}
 
 	return snippets, nil
+}
+
+func (m *SnippetModel) Update(id int, title string, content string) error {
+	stmt := `UPDATE snippets SET title = ?, content = ? WHERE id = ?`
+	_, err := m.DB.Exec(stmt, title, content, id)
+	return err
+}
+
+func (m *SnippetModel) Delete(id int) error {
+	stmt := `DELETE FROM snippets WHERE id = ?`
+	_, err := m.DB.Exec(stmt, id)
+	return err
 }

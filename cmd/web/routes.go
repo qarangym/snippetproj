@@ -34,6 +34,10 @@ func (app *application) routes() http.Handler {
 
 	router.Handler(http.MethodGet, "/snippet/create", protected.ThenFunc(app.snippetCreate))
 	router.Handler(http.MethodPost, "/snippet/create", protected.ThenFunc(app.snippetCreatePost))
+	router.Handler(http.MethodGet, "/snippet/update/:id", protected.ThenFunc(app.snippetUpdate))
+	router.Handler(http.MethodPost, "/snippet/update/:id", protected.ThenFunc(app.snippetUpdatePost))
+	router.HandlerFunc(http.MethodPost, "/snippet/delete/:id", app.snippetDelete)
+
 	router.Handler(http.MethodPost, "/user/logout", protected.ThenFunc(app.userLogoutPost))
 
 	standard := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
